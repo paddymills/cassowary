@@ -7,7 +7,7 @@ use std::{
 };
 
 const JOBSHIP_RE: LazyCell<Regex> = LazyCell::new(|| {
-    Regex::new(r"^(\d{7})([[:alpha:]]{1})-(\d+)$")
+    Regex::new(r"^(\d{7})([[:alpha:]])?-(\d+)$")
         .expect("failed to build JobShipment parsing regex")
 });
 
@@ -18,7 +18,7 @@ pub struct JobShipment {
     pub job: u32,
     
     /// Structure letter
-    pub structure: String,
+    pub structure: Option<String>,
 
     /// Shipment number
     pub shipment: u8
@@ -35,7 +35,7 @@ impl FromStr for JobShipment {
                     Ok(job) => job,
                     Err(_) => return Err(format!("Failed to parse Job from `{}`", s))
                 };
-                let structure = cap.get(2).unwrap().as_str().into();
+                let structure = cap.get(2).map(|m| m.as_str().into());
                 let shipment = match cap.get(3).unwrap().as_str().parse() {
                     Ok(job) => job,
                     Err(_) => return Err(format!("Failed to parse Shipment from `{}`", s))
@@ -54,6 +54,6 @@ impl FromStr for JobShipment {
 
 impl Display for JobShipment {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}{}-{}", self.job, self.structure, self.shipment)
+        write!(f, "{}{}-{}", self.job, self.structure.as_ref().map_or("", |s| s.as_str()), self.shipment)
     }
 }
