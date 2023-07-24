@@ -7,7 +7,7 @@ use cassowary::logging;
 
 /// Cassowary inventory controller
 #[derive(Debug, Parser)]
-#[clap(name = "Sap Confirmation Files")]
+#[clap(name = "Cassowary")]
 #[clap(author, version)]
 struct Args {
     /// Logging verbosity
