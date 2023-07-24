@@ -2,18 +2,21 @@
 use surrealdb::{
     engine::remote::http::{Client, Https},
     opt::auth::Database,
-    sql::Thing,
     Surreal
 };
 
+/// A generic Record for testing purposes
+/// 
+/// allows for returning of serialized data with a generic struct
+#[cfg(not(profile="release"))]
 #[derive(Debug, Deserialize)]
-struct Record {
+pub(crate) struct Record {
     #[allow(dead_code)]
-    id: Thing,
+    id: surrealdb::sql::Thing,
 }
 
 pub async fn init(server: String, auth: Database<'_>, namespace: String, database: String) -> Result<Surreal<Client>, Box<dyn std::error::Error>> {
-    info!("Connecting to Surreal database {} <{}/{}>", server, namespace, database);
+    debug!("Connecting to Surreal database {} <{}/{}>", server, namespace, database);
 
     let db = Surreal::new::<Https>(server).await?;
     db.signin( auth ).await?;
