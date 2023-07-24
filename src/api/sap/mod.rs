@@ -1,6 +1,8 @@
 
 mod movement;
-use movement::MovementType;
+pub use movement::MovementType;
 mod plant;
 pub use plant::Plant;
+mod wbs;
+pub use wbs::Wbs;
 
