@@ -1,4 +1,6 @@
 
+//! Cassowary database utilities
+
 use surrealdb::{
     engine::remote::http::{Client, Https},
     opt::auth::Database,

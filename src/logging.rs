@@ -1,4 +1,6 @@
 
+//! logger and utilities
+
 use log::LevelFilter;
 use simplelog::{Config, WriteLogger};
 
