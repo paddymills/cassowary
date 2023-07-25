@@ -32,7 +32,8 @@ pub enum Wbs {
     },
 
     /// Legacy WBS scheme
-    Legacy(JobShipment)
+    // JobShipment is boxed to keep variant size down
+    Legacy(Box<JobShipment>)
 }
 
 impl FromStr for Wbs {
@@ -52,7 +53,7 @@ impl FromStr for Wbs {
             let job = caps.get(1).unwrap().as_str().parse().unwrap();
             let shipment: u8 = caps.get(2).unwrap().as_str().parse().unwrap();
 
-            return Ok( Self::Legacy(JobShipment { job, structure: None, shipment }) );
+            return Ok( Self::Legacy(Box::new(JobShipment { job, structure: None, shipment })) );
         }
 
         Err(format!("Failed to parse WBS element from `{}`", s))
