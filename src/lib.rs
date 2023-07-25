@@ -1,8 +1,17 @@
 
-#![feature(lazy_cell)]
+#![warn(missing_docs)]
+#![warn(missing_debug_implementations)]
 
-#[macro_use] extern crate log;
-#[macro_use] extern crate serde;
+//! Middle manager for inventory management
+//! 
+//! todo:
+//! - [ ] interfaces
+//!     - [ ] SAP
+//!     - [ ] Sigmanest
+//! - [ ] plugin system
+//! - [ ] database
+
+#![feature(lazy_cell)]
 
 pub mod api;
 pub mod flows;

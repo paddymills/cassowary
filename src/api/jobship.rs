@@ -44,7 +44,7 @@ impl FromStr for JobShipment {
                 Ok( Self { job, structure, shipment } )
             },
             None => {
-                error!("Failed to parse JobShipment from `{}`", s);
+                log::error!("Failed to parse JobShipment from `{}`", s);
 
                 Err(format!("Failed to parse Job, Structure and Shipment from `{}`", s))
             }

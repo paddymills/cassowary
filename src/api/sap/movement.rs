@@ -39,7 +39,7 @@ impl FromStr for MovementType {
                 Ok( Self { id, project } )
             },
             None => {
-                error!("Failed to parse MovementType from `{}`", s);
+                log::error!("Failed to parse MovementType from `{}`", s);
 
                 Err(format!("Failed to parse SAP movement type from `{}`", s))
             }

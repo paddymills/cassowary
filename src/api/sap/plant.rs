@@ -1,4 +1,7 @@
 
+use serde::{Serialize, Deserialize};
+
+
 /// SAP Plant
 #[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
 pub enum Plant {

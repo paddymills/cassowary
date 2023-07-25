@@ -1,6 +1,4 @@
 
-#[macro_use] extern crate log;
-
 use clap::Parser;
 
 use cassowary::logging;
@@ -21,7 +19,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
 
     let _ = logging::init_logging(args.verbose.log_level_filter());
-    trace!("Logging initialized");
+    log::trace!("Logging initialized");
 
     Ok(())
 }

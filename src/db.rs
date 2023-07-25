@@ -1,6 +1,7 @@
 
 //! Cassowary database utilities
 
+use serde::Deserialize;
 use surrealdb::{
     engine::remote::http::{Client, Https},
     opt::auth::Database,
@@ -19,7 +20,7 @@ pub(crate) struct Record {
 
 /// Initialize Surreal db connection
 pub async fn init(server: String, auth: Database<'_>, namespace: String, database: String) -> Result<Surreal<Client>, Box<dyn std::error::Error>> {
-    debug!("Connecting to Surreal database {} <{}/{}>", server, namespace, database);
+    log::debug!("Connecting to Surreal database {} <{}/{}>", server, namespace, database);
 
     let db = Surreal::new::<Https>(server).await?;
     db.signin( auth ).await?;
@@ -28,7 +29,7 @@ pub async fn init(server: String, auth: Database<'_>, namespace: String, databas
         .use_db(database)
         .await?;
 
-    info!("Surrealdb connection successful");
+    log::info!("Surrealdb connection successful");
 
     Ok(db)
 }
