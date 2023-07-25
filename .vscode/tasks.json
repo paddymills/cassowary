@@ -6,11 +6,14 @@
       {
         "label": "build docs",
         "type": "shell",
-        "command": "cargo doc --no-deps",
+        "command": "watchexec --watch src --exts rs --restart -- cargo doc --no-deps",
         "group": "build",
         "presentation": {
           "reveal": "silent",
           "panel": "shared"
+        },
+        "runOptions": {
+          "runOn": "folderOpen"
         }
       }
     ]
