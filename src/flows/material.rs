@@ -1,7 +1,9 @@
 
+//! Material movement flows
+
 use crate::api::sap::{MovementType, Plant};
 
-
+/// Goods receipt
 #[derive(Debug)]
 pub struct MigoGr {
     /// 101 for receipt, 102 for reversal
@@ -17,6 +19,7 @@ pub struct MigoGr {
     po: String,
 }
 
+/// Goods Issue
 #[derive(Debug)]
 pub struct MigoGi {
     trans: u8,
@@ -26,6 +29,7 @@ pub struct MigoGi {
     wbs: Option<String>,
 }
 
+/// Movement types
 #[derive(Debug)]
 pub enum Movement {
     GoodsReceipt(MigoGr),
