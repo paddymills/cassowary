@@ -36,7 +36,7 @@ impl Material {
 
     /// Infer if [`Commodity`] can punch based on minimal punch thickness
     /// 
-    /// [`Commodity`]: crate::Commodity
+    /// [`Commodity`]: super::Commodity
     // TODO: infer punch requirements from Engineering (if possible)
     pub fn can_punch(&self, min_punch_thk: f32) -> bool {
         match self.comm {
@@ -50,7 +50,7 @@ impl Material {
     /// 
     /// Useful for filtering items for Sigmanest
     /// 
-    /// [`Commodity`]: crate::Commodity
+    /// [`Commodity`]: super::Commodity
     pub fn is_pl(&self) -> bool {
         match self.comm {
             Commodity::Plate { .. } => true,
