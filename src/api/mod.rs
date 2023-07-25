@@ -4,8 +4,8 @@
 mod grade;
 pub use grade::Grade;
 
-mod jobship;
-pub use jobship::JobShipment;
+mod job_shipment;
+pub use job_shipment::JobShipment;
 
 mod part;
 pub use part::{Commodity, Material, Part};
