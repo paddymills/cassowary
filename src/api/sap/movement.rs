@@ -11,6 +11,30 @@ const MVMT_RE: LazyCell<Regex> = LazyCell::new(|| {
         .expect("failed to build MovementType parsing regex")
 });
 
+/// parses a movement string into an `( id, project )` pair
+/// 
+/// id: 3-digit movement type
+/// project: if this is a Q-variant
+/// 
+/// example: 261Q -> ( 261, true )
+fn parse_movement(s: &str) -> Result<(u32, bool), String> {
+    match MVMT_RE.captures(s) {
+        Some(cap) => {
+            // `cap.get(1).unwrap()` should not fail due to being a match
+            // `.parse().unwrap()` should not failt due to regex validation
+            let id = cap.get(1).unwrap().as_str().parse().unwrap();
+            let project = cap.get(2).is_some();
+            
+            Ok( (id, project) )
+        },
+        None => {
+            log::error!("Failed to parse MovementType from `{}`", s);
+
+            Err(format!("Failed to parse SAP movement type from `{}`", s))
+        }
+    }
+}
+
 /// SAP movement type
 /// 
 /// id: 3-digit movement type
@@ -18,38 +42,40 @@ const MVMT_RE: LazyCell<Regex> = LazyCell::new(|| {
 /// 
 /// example: 261Q -> MovementType { id: 261, project: true }
 #[derive(Debug)]
-pub struct MovementType {
-    id: u16,
-    project: bool
+pub enum MovementType {
+    /// MIGO_GR 101
+    MigoGrReceipt(bool),
+    /// MIGO_GR 102
+    MigoGrReversal(bool),
+
+    /// MIGO_GI 261
+    MigoGiConsumption(bool)
 }
 
 impl FromStr for MovementType {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match MVMT_RE.captures(s) {
-            Some(cap) => {
-                // `cap.get(n).unwrap()` should not fail
-                let id = match cap.get(1).unwrap().as_str().parse() {
-                    Ok(job) => job,
-                    Err(_) => return Err(format!("Failed to parse Movement id from `{}`", s))
-                };
-                let project = cap.get(2).is_some();
-                
-                Ok( Self { id, project } )
-            },
-            None => {
-                log::error!("Failed to parse MovementType from `{}`", s);
+        let (id, is_project) = parse_movement(s)?;
+        match id {
+            101 => Ok( Self::MigoGrReceipt(is_project) ),
+            102 => Ok( Self::MigoGrReversal(is_project) ),
 
-                Err(format!("Failed to parse SAP movement type from `{}`", s))
-            }
+            261 => Ok( Self::MigoGiConsumption(is_project) ),
+
+            _ => Err(format!("Unmatched movement id for SAP movement type `{}`", s))
         }
     }
 }
 
 impl Display for MovementType {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}{}", self.id, if self.project {"Q"} else {""})
+        match self {
+            Self::MigoGrReceipt(p)  => write!(f, "101{}", if *p {"Q"} else {""}),
+            Self::MigoGrReversal(p) => write!(f, "102{}", if *p {"Q"} else {""}),
+
+            Self::MigoGiConsumption(p) => write!(f, "261{}", if *p {"Q"} else {""}),
+        }
     }
 }
 
@@ -65,7 +91,7 @@ mod tests {
 
     #[test]
     fn test_eq_project() {
-        let test_against = MovementType { id: 261, project: true };
+        let test_against = MovementType::MigoGiConsumption(true);
 
         assert_eq!(test_against, "261Q");
         assert_ne!(test_against, "261");
@@ -75,7 +101,7 @@ mod tests {
 
     #[test]
     fn test_eq_nonproject() {
-        let test_against = MovementType { id: 261, project: false };
+        let test_against = MovementType::MigoGiConsumption(false);
 
         assert_eq!(test_against, "261");
         assert_ne!(test_against, "261Q");
