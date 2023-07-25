@@ -38,7 +38,8 @@ impl Part {
 }
 
 impl Display for Part {
+    /// Displays the part in the format `{mark} ({material}) [{material.grade}]`
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ({:?}) [{}]", self.mark, self.matl, self.matl.grade.force_cvn())
+        write!(f, "{} ({:?}) [{}]", self.mark, self.matl, self.matl.grade)
     }
 }

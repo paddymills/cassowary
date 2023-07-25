@@ -61,6 +61,7 @@ impl Material {
 }
 
 impl Display for Material {
+    /// Displays the material in the format `{commodity} x {length}`
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "{:} x {}", &self.comm, self.len)
     }

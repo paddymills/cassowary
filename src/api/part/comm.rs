@@ -32,6 +32,11 @@ impl Default for Commodity {
 }
 
 impl Display for Commodity {
+    /// Displays the commodity in its appropriate format
+    /// 
+    /// - Plates: `PL {thk} x {width}`
+    /// - Shapes: `{section}`
+    /// - Skip: `UNMATCHED SECTION {description}`
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match &self {
             Commodity::Plate { thk, wid }    => write!(f, "PL {} x {}", thk, wid),
