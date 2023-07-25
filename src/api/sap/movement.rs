@@ -53,4 +53,33 @@ impl Display for MovementType {
     }
 }
 
+impl PartialEq<&str> for MovementType {
+    fn eq(&self, other: &&str) -> bool {
+        other == &self.to_string()
+    }
+}
 
+#[cfg(test)]
+mod tests {
+    use super::MovementType;
+
+    #[test]
+    fn test_eq_project() {
+        let test_against = MovementType { id: 261, project: true };
+
+        assert_eq!(test_against, "261Q");
+        assert_ne!(test_against, "261");
+        assert_ne!(test_against, "221Q");
+        assert_ne!(test_against, "Q");
+    }
+
+    #[test]
+    fn test_eq_nonproject() {
+        let test_against = MovementType { id: 261, project: false };
+
+        assert_eq!(test_against, "261");
+        assert_ne!(test_against, "261Q");
+        assert_ne!(test_against, "221");
+        assert_ne!(test_against, "");
+    }
+}
