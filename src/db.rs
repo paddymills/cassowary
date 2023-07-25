@@ -17,6 +17,7 @@ pub(crate) struct Record {
     id: surrealdb::sql::Thing,
 }
 
+/// Initialize Surreal db connection
 pub async fn init(server: String, auth: Database<'_>, namespace: String, database: String) -> Result<Surreal<Client>, Box<dyn std::error::Error>> {
     debug!("Connecting to Surreal database {} <{}/{}>", server, namespace, database);
 

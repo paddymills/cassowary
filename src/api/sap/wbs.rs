@@ -1,4 +1,5 @@
 
+//! WBS element
 
 use regex::Regex;
 use std::{
@@ -21,7 +22,16 @@ const LEGACY_WBS_RE: LazyCell<Regex> = LazyCell::new(|| {
 /// SAP WBS Element
 #[derive(Debug)]
 pub enum Wbs {
-    HardDollar { job: u32, id: u32 },
+    /// Current WBS scheme for Hard Dollar system
+    HardDollar {
+        /// Job number
+        job: u32,
+        
+        /// Hard Dollar line id
+        id: u32
+    },
+
+    /// Legacy WBS scheme
     Legacy(JobShipment)
 }
 
@@ -50,6 +60,9 @@ impl FromStr for Wbs {
 }
 
 impl Display for Wbs {
+    /// Display WBS element in its known pattern
+    /// 
+    /// Can be used as a way to covert a WBS element back to its text format
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
             Self::HardDollar { job, id } => write!(f, "D-{}-{}", job, id),
