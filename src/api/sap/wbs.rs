@@ -20,7 +20,7 @@ const LEGACY_WBS_RE: LazyCell<Regex> = LazyCell::new(|| {
 });
 
 /// SAP WBS Element
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum Wbs {
     /// Current WBS scheme for Hard Dollar system
     HardDollar {
@@ -67,9 +67,18 @@ impl Display for Wbs {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
             Self::HardDollar { job, id } => write!(f, "D-{}-{}", job, id),
-            Self::Legacy(job_shipment) => write!(f, "S-{}-2-{}", job_shipment.job, job_shipment.shipment)
+            Self::Legacy(job_shipment) => write!(f, "S-{}-2-{:02}", job_shipment.job, job_shipment.shipment)
         }
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
+    #[test]
+    fn test_parse() {
+        assert_eq!(Ok(Wbs::HardDollar { job: 1220111, id: 10001 }), "D-1220111-10001".parse());
+        assert_eq!(Ok(Wbs::Legacy(Box::new("1220111-04".parse().unwrap()))), "S-1220111-2-04".parse());
+    }
+}
