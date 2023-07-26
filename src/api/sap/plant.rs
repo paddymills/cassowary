@@ -3,7 +3,7 @@ use serde::{Serialize, Deserialize};
 
 
 /// SAP Plant
-#[derive(Debug, Deserialize, PartialEq, Serialize, Clone)]
+#[derive(Debug, Deserialize, PartialEq, Serialize)]
 pub enum Plant {
     /// Lancaster (HS01)
     #[serde(rename = "HS01")]
