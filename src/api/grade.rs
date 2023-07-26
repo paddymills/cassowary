@@ -5,7 +5,7 @@ const DEFAULT_ZONE: u8 = 2;
 const HPS_ZONE: u8 = 3;
 
 /// Material grade
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Grade<'a> {
     spec: &'a str,
     grade: &'a str,
@@ -15,11 +15,11 @@ pub struct Grade<'a> {
 
 impl<'a> Grade<'a> {
     /// Crates a new grade from a given spec, grade, test and zone
-    pub fn new(spec: &str, grade: &str, test: &str, mut zone: Option<u8>) -> Self {
+    pub fn new(spec: &'a str, grade: &'a str, test: Option<&str>, mut zone: Option<u8>) -> Self {
         match spec {
-            "A240 Type 304" => Self::new("A240", "304",   "", None),
-            "A240 Type 316" => Self::new("A240", "316",   "", None),
-            "A606-TYPE4"    => Self::new("A606", "TYPE4", "", None),
+            "A240 Type 304" => Self::new("A240", "304",   None, None),
+            "A240 Type 316" => Self::new("A240", "316",   None, None),
+            "A606-TYPE4"    => Self::new("A606", "TYPE4", None, None),
             _ => {
                 if grade.contains("HPS") {
                     zone = Some(HPS_ZONE);
@@ -38,13 +38,23 @@ impl<'a> Grade<'a> {
     /// Coerces non-charpy materials to charpy (i.e. A709-50 as A709-50T2).
     /// 
     /// Useful for Sigmanest, where all plate is charpy at the least.
+    /// 
     /// Note that materials that are not applicable to charpy (i.e. A240-304)
     /// will not return with the charpy designation.
-    pub fn force_cvn(&self) -> String {
-        match self.test {
-            Test::None => format!("{}-{}{:}{}", self.spec, self.grade, Test::Charpy, self.zone.unwrap_or(DEFAULT_ZONE)),
-            _          => format!("{:}", self)
+    /// 
+    /// This consumes the original `Grade`.
+    /// If you need to keep the original `Grade`, clone it first
+    /// ```
+    /// let original = Grade::new("A709", "50W", None, Some(2));
+    /// let with_cvn = original.clone().force_cvn();
+    /// assert_ne!(original.test, with_cvn.test);
+    /// ```
+    pub fn force_cvn(mut self) -> Self {
+        if self.test == Test::None {
+            self.test = Test::Charpy;
         }
+
+        self
     }
 
     /// Check if a part requires charpy testing
@@ -66,7 +76,7 @@ impl Display for Grade<'_> {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone, PartialEq)]
 enum Test {
     Fcm,
     Charpy,
@@ -74,12 +84,18 @@ enum Test {
     NotApplicable
 }
 
+impl From<Option<&str>> for Test {
+    fn from(value: Option<&str>) -> Self {
+        value.map_or(Test::default(), Into::into)
+    }
+}
+
 impl From<&str> for Test {
-    fn from(test: &str) -> Self {
-        match test {
+    fn from(value: &str) -> Self {
+        match value {
             "FCM" => Test::Fcm,
             "T"   => Test::Charpy,
-            _     => Test::None
+            _     => Test::default()
         }
     }
 }
