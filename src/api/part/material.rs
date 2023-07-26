@@ -15,7 +15,7 @@ pub struct Material<'a> {
 
 impl<'a> Material<'a> {
     /// Create a new plate from thickness, width and length
-    pub fn new_pl(thk: f32, wid: f32, len: f32, grade: Grade) -> Self {
+    pub fn new_pl(thk: f32, wid: f32, len: f32, grade: Grade<'a>) -> Self {
         Self {
             comm: Commodity::Plate { thk, wid },
             len,
@@ -24,7 +24,7 @@ impl<'a> Material<'a> {
     }
 
     /// Create a new shape from thickness, section name and length
-    pub fn new_shape(thk: f32, section: String, len: f32, grade: Grade) -> Self {
+    pub fn new_shape(thk: f32, section: String, len: f32, grade: Grade<'a>) -> Self {
         Self {
             comm: Commodity::Shape { thk, section },
             len,

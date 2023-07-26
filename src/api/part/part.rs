@@ -5,7 +5,7 @@ use super::Material;
 
 /// Part (piecemark)
 #[derive(Debug, Default)]
-pub struct Part {
+pub struct Part<'a> {
     /// Piecemark
     pub mark: String,
     /// Quantity
@@ -16,13 +16,13 @@ pub struct Part {
     /// Description
     pub desc: Option<String>,
     /// Geometry information
-    pub matl: Material,
+    pub matl: Option<Material<'a>>,
     
     /// Additional remarks
     pub remark: Option<String>
 }
 
-impl Part {
+impl Part<'_> {
     /// Create a new part from a given mark
     pub fn new(mark: String) -> Self {
         Self { mark, ..Default::default() }
@@ -33,13 +33,16 @@ impl Part {
     /// 
     /// ['Material']: crate::Material
     pub fn is_pl(&self) -> bool {
-        self.matl.is_pl()
+        self.matl.as_ref().map_or(false, |m| m.is_pl())
     }
 }
 
-impl Display for Part {
+impl Display for Part<'_> {
     /// Displays the part in the format `{mark} ({material}) [{material.grade}]`
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ({:?}) [{}]", self.mark, self.matl, self.matl.grade)
+        match &self.matl {
+            Some(matl) => write!(f, "{} ({}) [{}]", self.mark, matl, matl.grade),
+            None       => write!(f, "{}", self.mark)
+        }
     }
 }
