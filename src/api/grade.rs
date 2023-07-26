@@ -6,79 +6,62 @@ const HPS_ZONE: u8 = 3;
 
 /// Material grade
 #[derive(Debug)]
-pub struct Grade {
-    spec: String,
-    grade: String,
+pub struct Grade<'a> {
+    spec: &'a str,
+    grade: &'a str,
     test: Test,
-    zone: u8
+    zone: Option<u8>
 }
 
-impl Grade {
+impl<'a> Grade<'a> {
     /// Crates a new grade from a given spec, grade, test and zone
-    pub fn new(_spec: &str, _grade: &str, _test: &str, mut zone: u8) -> Self {
-        let mut spec  = String::from(_spec);
-        let mut grade = String::from(_grade);
-        let mut test  = _test.into();
+    pub fn new(spec: &str, grade: &str, test: &str, mut zone: Option<u8>) -> Self {
+        match spec {
+            "A240 Type 304" => Self::new("A240", "304",   "", None),
+            "A240 Type 316" => Self::new("A240", "316",   "", None),
+            "A606-TYPE4"    => Self::new("A606", "TYPE4", "", None),
+            _ => {
+                if grade.contains("HPS") {
+                    zone = Some(HPS_ZONE);
+                }
 
-        if zone == 0 {
-            zone = DEFAULT_ZONE
+                let test = match spec {
+                    "A240" | "A606" => Test::NotApplicable,
+                    _ => test.into()
+                };
+        
+                Self { spec, grade, test, zone }
+            }
         }
-
-        match _spec {
-            "A240 Type 304" => {
-                spec  = "A240".into();
-                grade = "304".into();
-                test  = Test::NotApplicable;
-            },
-            "A240 Type 316" => {
-                spec  = "A240".into();
-                grade = "316".into();
-                test  = Test::NotApplicable;
-            },
-            "A606-TYPE4" => {
-                spec  = "A606".into();
-                grade = "TYPE4".into();
-                test  = Test::NotApplicable;
-            },
-            _ => ()
-        }
-
-        if grade.contains("HPS") {
-            zone = HPS_ZONE;
-        }
-
-        Self { spec, grade, test, zone }
     }
 
     /// Coerces non-charpy materials to charpy (i.e. A709-50 as A709-50T2).
+    /// 
     /// Useful for Sigmanest, where all plate is charpy at the least.
     /// Note that materials that are not applicable to charpy (i.e. A240-304)
     /// will not return with the charpy designation.
     pub fn force_cvn(&self) -> String {
         match self.test {
-            Test::None => format!("{}-{}{:}{}", self.spec, self.grade, Test::Charpy, self.zone),
+            Test::None => format!("{}-{}{:}{}", self.spec, self.grade, Test::Charpy, self.zone.unwrap_or(DEFAULT_ZONE)),
             _          => format!("{:}", self)
         }
     }
-}
 
-impl Default for Grade {
-    fn default() -> Self {
-        Self {
-            spec: "A709".into(),
-            grade: "[unknown]".into(),
-            test: Test::None,
-            zone: DEFAULT_ZONE
+    /// Check if a part requires charpy testing
+    pub fn requires_charpy(&self) -> bool {
+        match self.test {
+            Test::Charpy | Test::Fcm => true,
+            _ => false
         }
     }
 }
 
-impl Display for Grade {
+impl Display for Grade<'_> {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self.test {
             Test::None          => write!(f, "{}-{}", self.spec, self.grade),
             Test::NotApplicable => write!(f, "{}-{}", self.spec, self.grade),
-            _                   => write!(f, "{}-{}{:}{}", self.spec, self.grade, self.test, self.zone)
+            _                   => write!(f, "{}-{}{:}{}", self.spec, self.grade, self.test, self.zone.unwrap_or(DEFAULT_ZONE))
         }
     }
 }
