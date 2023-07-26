@@ -5,7 +5,7 @@ const DEFAULT_ZONE: u8 = 2;
 const HPS_ZONE: u8 = 3;
 
 /// Material grade
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct Grade<'a> {
     spec: &'a str,
     grade: &'a str,
@@ -45,9 +45,10 @@ impl<'a> Grade<'a> {
     /// This consumes the original `Grade`.
     /// If you need to keep the original `Grade`, clone it first
     /// ```
+    /// # use cassowary::api::Grade;
     /// let original = Grade::new("A709", "50W", None, Some(2));
     /// let with_cvn = original.clone().force_cvn();
-    /// assert_ne!(original.test, with_cvn.test);
+    /// assert_ne!(original, with_cvn);
     /// ```
     pub fn force_cvn(mut self) -> Self {
         if self.test == Test::None {
@@ -71,7 +72,7 @@ impl Display for Grade<'_> {
         match self.test {
             Test::None          => write!(f, "{}-{}", self.spec, self.grade),
             Test::NotApplicable => write!(f, "{}-{}", self.spec, self.grade),
-            _                   => write!(f, "{}-{}{:}{}", self.spec, self.grade, self.test, self.zone.unwrap_or(DEFAULT_ZONE))
+            _                   => write!(f, "{}-{}{}{}", self.spec, self.grade, self.test, self.zone.unwrap_or(DEFAULT_ZONE))
         }
     }
 }
