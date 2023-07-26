@@ -6,7 +6,7 @@
       {
         "label": "build docs",
         "type": "shell",
-        "command": "watchexec --watch src --exts rs --restart -- cargo doc --no-deps",
+        "command": "watchexec --watch src --exts rs --restart -- cargo d",
         "group": "build",
         "presentation": {
           "reveal": "silent",
