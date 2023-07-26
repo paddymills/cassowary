@@ -1,5 +1,5 @@
 [alias]
-d = "doc --no-deps"
+d = "doc --no-deps --all-features"
 
 [build]
 rustdocflags = ["--allow", "unused"]
