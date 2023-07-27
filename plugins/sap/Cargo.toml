@@ -1,0 +1,21 @@
+[package]
+name = "sap"
+description = "Cassowary SAP interface plugin"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# crate-type = ["dylib"]
+
+[dependencies]
+cassowary-core.workspace = true
+regex.workspace = true
+serde.workspace = true
+
+# logging
+log.workspace = true

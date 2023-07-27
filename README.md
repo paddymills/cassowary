@@ -11,8 +11,8 @@ rustup toolchain install nightly
 ```
 
 ## Build
-```rust
-cargo build --release
+```
+cargo build --release --workspace
 ```
 ## Install
 
@@ -29,7 +29,7 @@ cp target/release/cassowary.exe <path to install binary to>
 
 ### 2) using `cargo install`
 Supply your installation directory with the `--root` option. The binary will be put a `bin` directory in this path.
-```rust
+```
 cargo install --path . --root <installation path>
 ```
 

@@ -1,7 +1,7 @@
 
 use clap::Parser;
 
-use cassowary::logging;
+use cassowary_core::logging;
 
 /// Cassowary inventory controller
 #[derive(Debug, Parser)]
@@ -12,7 +12,6 @@ struct Args {
     #[clap(flatten)]
     verbose: clap_verbosity_flag::Verbosity
 }
-
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

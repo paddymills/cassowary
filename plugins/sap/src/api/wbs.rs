@@ -8,7 +8,7 @@ use std::{
     str::FromStr
 };
 
-use crate::api::JobShipment;
+use cassowary_core::api::JobShipment;
 
 const WBS_RE: LazyCell<Regex> = LazyCell::new(|| {
     Regex::new(r"^D-(\d{7})-(\d{5})$")

@@ -7,18 +7,8 @@
 #![deny(deprecated, legacy_derive_helpers)]
 #![deny(non_ascii_idents)]
 
-//! Middle manager for inventory management
-//! 
-//! todo:
-//! - [ ] interfaces
-//!     - [ ] SAP
-//!     - [ ] Sigmanest
-//! - [ ] plugin system
-//! - [ ] database
+//! SAP interface plugin
 
 #![feature(lazy_cell)]
 
 pub mod api;
-pub mod flows;
-pub mod logging;
-pub mod db;
