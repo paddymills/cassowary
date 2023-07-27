@@ -2,7 +2,9 @@
 members = [
     "core",
     "bin",
-    "plugins/sap"
+    "plugins/sap",
+    "plugins/runtime",
+    "plugins/common"
 ]
 default-members = [ "core" ]
 resolver = "2"
