@@ -1,14 +1,8 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+//! Cassowary plugin interface
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+pub trait CassowaryPlugin {
+    type Error;
+
+    fn on_event() -> Result<(), Self::Error>;
 }

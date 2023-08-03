@@ -1,5 +1,6 @@
 [package]
 name = "cassowary-plugin-common"
+description = "Cassowary plugin interface"
 authors.workspace = true
 version.workspace = true
 edition.workspace = true

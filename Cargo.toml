@@ -28,5 +28,8 @@ tokio = "1.29.1"
 log = "0.4.19"
 simplelog = "0.12.1"
 
+# plugin system
+cassowary-plugin-common = { path = "plugins/common" }
+
 [workspace.dev-dependencies]
 regex = { version = "1.9.1", features = ["logging"] }
