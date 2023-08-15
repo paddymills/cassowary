@@ -1,0 +1,20 @@
+[package]
+name = "hs-uuid"
+authors.workspace = true
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = [ "v5_uuid" ]
+v1_uuid = [ "uuid/v1", "uuid/std", "uuid/rng" ]
+v5_uuid = [ "uuid/v5" ]
+db_uuid = []
+
+[dependencies]
+cfg-if = "1.0.0"
+clap = { version = "4.0.29", features = ["derive", "cargo"] }
+uuid = { version = "1.2.2", optional = true }
