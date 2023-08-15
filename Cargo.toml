@@ -4,7 +4,8 @@ members = [
     "bin",
     "plugins/sap",
     "plugins/runtime",
-    "plugins/common"
+    "plugins/common",
+    "plugins/hs-uuid"
 ]
 default-members = [ "core" ]
 resolver = "2"
