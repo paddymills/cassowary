@@ -5,9 +5,11 @@ members = [
     "plugins/sap",
     "plugins/runtime",
     "plugins/common",
-    "plugins/hs-uuid"
+    "plugins/hs-uuid",
+
+    "examples"
 ]
-default-members = [ "core" ]
+# default-members = [ "core" ]
 resolver = "2"
 
 [workspace.package]

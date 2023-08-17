@@ -1,14 +1,14 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
-}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+#[macro_use] extern crate serde;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
+mod server;
+mod client;
+
+pub use server::Server;
+pub use client::Client;
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Message {
+    pub id: u32,
+    pub msg: String
 }
