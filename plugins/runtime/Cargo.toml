@@ -1,5 +1,6 @@
 [package]
 name = "cassowary-plugin-runtime"
+description = "Cassowary plugin runtime"
 authors.workspace = true
 version.workspace = true
 edition.workspace = true
