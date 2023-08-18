@@ -6,7 +6,7 @@ use tokio::sync::{mpsc, Mutex};
 use std::error::Error;
 use std::sync::Arc;
 
-use cassowary_plugin_common::Message;
+use cassowary_plugin_common::{Message, MessageType};
 
 #[derive(Debug)]
 pub struct Client {
@@ -50,7 +50,7 @@ impl Client {
                 tx.send(
                     Message {
                         id: 0,
-                        msg: String::from_utf8(buf.to_vec()).unwrap()
+                        payload: MessageType::Simple(String::from_utf8(buf.to_vec()).unwrap())
                     }
                 ).await.unwrap();
             }

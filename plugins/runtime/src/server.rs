@@ -8,7 +8,7 @@ use std::sync::Arc;
 use rand::prelude::*;
 
 use super::Client;
-use cassowary_plugin_common::Message;
+use cassowary_plugin_common::{Message, MessageType};
 
 #[derive(Debug, Default)]
 pub struct Server {
@@ -35,8 +35,8 @@ impl Server {
                         println!("Sending packet {} to client {}", iteration, client_id);
                         tx.send(
                             Message {
-                                id: iteration,
-                                msg: "new packet".into()
+                                id: 0,
+                                payload: MessageType::Simple("new packet".into())
                             }
                         ).await.unwrap();
                     }
