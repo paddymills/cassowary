@@ -6,6 +6,7 @@ edition = "2021"
 
 [dev-dependencies]
 cassowary-plugin-runtime = { path = "../plugins/runtime", version = "0.1.0" }
+cassowary-plugin-common = { path = "../plugins/common", version = "0.1.0" }
 bincode = "1.3.3"
 bytes = "1.4"
 futures = "0.3"

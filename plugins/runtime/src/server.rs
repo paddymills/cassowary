@@ -7,7 +7,8 @@ use std::sync::Arc;
 
 use rand::prelude::*;
 
-use super::{Client, Message};
+use super::Client;
+use cassowary_plugin_common::Message;
 
 #[derive(Debug, Default)]
 pub struct Server {

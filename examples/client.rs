@@ -25,7 +25,7 @@ use std::env;
 use std::error::Error;
 use std::net::SocketAddr;
 
-use cassowary_plugin_runtime::Message;
+use cassowary_plugin_common::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {

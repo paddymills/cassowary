@@ -6,7 +6,7 @@ use tokio::sync::{mpsc, Mutex};
 use std::error::Error;
 use std::sync::Arc;
 
-use super::Message;
+use cassowary_plugin_common::Message;
 
 #[derive(Debug)]
 pub struct Client {
