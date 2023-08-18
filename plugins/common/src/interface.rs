@@ -53,7 +53,7 @@ pub trait CassowaryPlugin {
 
     /// handles a decoded [`Message`] that was received by [`listen`]
     /// 
-    /// ['Message']: crate::Message
-    /// ['listen']: crate::listen
+    /// [`Message`]: crate::Message
+    /// [`listen`]: crate::CassowaryPlugin#listen
     fn handle_message(&self, msg: Message) -> Result<(), Self::Error>;
 }
