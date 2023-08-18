@@ -16,10 +16,8 @@
 
 #![warn(rust_2018_idioms)]
 
-use futures::StreamExt;
 use tokio::io;
 use tokio::net::TcpStream;
-use tokio_util::codec::{BytesCodec, FramedRead, FramedWrite};
 
 use std::env;
 use std::error::Error;
