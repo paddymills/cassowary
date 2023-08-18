@@ -14,7 +14,13 @@
 //! this repository! Many of them recommend running this as a simple "hook up
 //! stdin/stdout to a server" to get up and running.
 
-#![warn(rust_2018_idioms)]
+// linting directives (see https://doc.rust-lang.org/rustc/lints/index.html)
+#![warn(missing_docs)]
+#![warn(missing_debug_implementations)]
+#![warn(noop_method_call, unreachable_pub)]
+#![warn(variant_size_differences)]
+#![deny(deprecated, legacy_derive_helpers)]
+#![deny(non_ascii_idents)]
 
 use tokio::io;
 use tokio::net::TcpStream;
