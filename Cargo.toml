@@ -33,6 +33,3 @@ simplelog = "0.12.1"
 
 # plugin system
 cassowary-plugin-common = { path = "plugins/common" }
-
-[workspace.dev-dependencies]
-regex = { version = "1.9.1", features = ["logging"] }
