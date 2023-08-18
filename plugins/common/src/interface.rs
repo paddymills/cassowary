@@ -8,11 +8,6 @@ use std::error::Error;
 use std::net::SocketAddr;
 
 /// Cassowary plugin interface
-/// 
-/// A plugin must implement this trait to ensure proper communication with the
-/// plugin runtime. While there is no strict enforcement of the plugin being
-/// implemented for the plugin (yet), implementing this trait ensures that proper
-/// handling of encoding/decoding of messages over the TCP stream happen.
 pub trait CassowaryPlugin {
     /// Error type returned by handlers
     type Error: std::error::Error + 'static;

@@ -9,6 +9,14 @@
 #![deny(non_ascii_idents)]
 
 //! Cassowary plugin interface and communication types
+//! 
+//! A plugin must implement the [`CassowaryPlugin`] trait to ensure proper communication with the
+//! plugin runtime. While there is no strict enforcement of the plugin being
+//! implemented for the plugin (yet), implementing this trait ensures that proper
+//! handling of encoding/decoding of messages over the TCP stream happen.
+//! 
+//! [`CassowaryPlugin`]: crate::CassowaryPlugin
+
 
 #[macro_use] extern crate serde;
 
