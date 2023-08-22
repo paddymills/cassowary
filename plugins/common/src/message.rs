@@ -15,4 +15,14 @@ pub struct Message {
 pub enum MessageType {
     /// A simple text message
     Simple(String),
+
+    /// Message for setting up a plugin's connection
+    Setup(ConnectionMessage)
+}
+
+/// Messages sent during connection setup phase
+#[derive(Debug)]
+pub enum ConnectionMessage {
+    /// Initial message, giving the plugin an name
+    Hello { name: String },
 }

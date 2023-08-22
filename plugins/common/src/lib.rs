@@ -32,4 +32,4 @@ mod interface;
 mod message;
 
 pub use interface::CassowaryPlugin;
-pub use message::{Message, MessageType};
+pub use message::*;
