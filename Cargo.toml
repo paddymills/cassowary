@@ -2,9 +2,10 @@
 members = [
     "core",
     "bin",
-    "plugins/sap",
-    "plugins/runtime",
+
     "plugins/common",
+    "plugins/runtime",
+    "plugins/sap",
     "plugins/hs-uuid",
 
     "examples"
