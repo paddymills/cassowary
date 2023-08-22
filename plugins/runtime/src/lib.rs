@@ -7,8 +7,11 @@
 #![deny(deprecated, legacy_derive_helpers)]
 #![deny(non_ascii_idents)]
 
-mod server;
 mod client;
+mod connection;
+mod server;
 
-pub use server::Server;
+pub(crate) use connection::ConnectionState;
+
 pub use client::Client;
+pub use server::Server;

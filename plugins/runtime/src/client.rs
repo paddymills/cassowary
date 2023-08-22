@@ -6,27 +6,31 @@ use tokio::sync::{mpsc, Mutex};
 use std::error::Error;
 use std::sync::Arc;
 
+use super::ConnectionState;
 use cassowary_plugin_common::{Message, MessageType};
 
 #[derive(Debug)]
 pub struct Client {
-    pub tx: Option<mpsc::Sender<Message>>,
+    state: ConnectionState,
+
+    pub  dispatcher: mpsc::Sender<Message>,
+
     read:  Arc<Mutex<ReadHalf<TcpStream>>>,
     write: Arc<Mutex<WriteHalf<TcpStream>>>,
 }
 
 impl Client {
-    pub fn new(socket: TcpStream) -> Self {
+    pub fn new(socket: TcpStream, ) -> Self {
         let (read_stream, write_stream) = tokio::io::split(socket);
         let read  = Arc::new(Mutex::new(read_stream));
         let write = Arc::new(Mutex::new(write_stream));
 
-        Self { tx: None, read, write }
+        Self { state: ConnectionState::Initiated, dispatcher: None, read, write }
     }
 
     pub fn start(&mut self) -> Result<(), Box<dyn Error>> {
         let (tx, mut rx) = mpsc::channel(16);
-        self.tx = Some( tx.clone() );
+        self.dispatcher = Some( tx.clone() );
 
         let read = self.read.clone();
         tokio::spawn(async move {

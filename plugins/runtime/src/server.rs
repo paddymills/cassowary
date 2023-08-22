@@ -1,8 +1,9 @@
 
-use tokio::net::TcpListener;
+use tokio::{net::TcpListener, sync::mpsc};
 use tokio::sync::Mutex;
 
 use std::error::Error;
+use std::net::SocketAddr;
 use std::sync::Arc;
 
 use rand::prelude::*;
@@ -10,15 +11,23 @@ use rand::prelude::*;
 use super::Client;
 use cassowary_plugin_common::{Message, MessageType};
 
+/// Runtime server
 #[derive(Debug, Default)]
 pub struct Server {
-    pub addr: String,
-    pub clients: Mutex<Vec<Arc<Mutex<Client>>>>
+    /// Address the server is listening for TCP connections over
+    pub addr: SocketAddr,
+    pub clients: Mutex<Vec<Arc<Mutex<Client>>>>,
+
+    receiver: mpsc::Receiver<Message>
 }
 
 impl Server {
     pub fn new(addr: String) -> Self {
-        Self { addr, ..Default::default() }
+        let (tx, receiver) = mpsc::channel(64);
+
+        let self = Self { addr, receiver, ..Default::default() };
+
+        self
     }
 
     pub async fn generate_output(&self) -> Result<(), Box<dyn Error>> {
@@ -55,7 +64,7 @@ impl Server {
         Ok(())
     }
 
-    pub async fn listen_connections(&self) -> Result<(), Box<dyn Error>> {
+    pub async fn listen_connections<T>(&self, rx: mpsc::Receiver<T>) -> Result<(), Box<dyn Error>> {
         // Create a TCP listener which will listen for incoming
         // connections. This TCP listener is bound to the address we determined
         // above and must be associated with an event loop.
@@ -74,11 +83,12 @@ impl Server {
             // Essentially here we're executing a new task to run concurrently,
             // which will allow all of our clients to be processed concurrently.
 
+
+
+
             let client = Arc::new(Mutex::new(Client::new(socket)));
             {
-                let client = client.clone();
-                let mut clients = self.clients.lock().await;
-                clients.push(client);
+                self.clients.lock().await.push( client.clone() );
             }
             client.clone().lock().await.start()?;
         }
