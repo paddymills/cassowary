@@ -12,7 +12,7 @@ use super::Client;
 use cassowary_plugin_common::{Message, MessageType};
 
 /// Runtime server
-#[derive(Debug, Default)]
+#[derive(Debug)]
 pub struct Server {
     /// Address the server is listening for TCP connections over
     pub addr: SocketAddr,
@@ -22,10 +22,12 @@ pub struct Server {
 }
 
 impl Server {
-    pub fn new(addr: String) -> Self {
+    pub fn new(addr: SocketAddr) -> Self {
         let (tx, receiver) = mpsc::channel(64);
 
-        let self = Self { addr, receiver, ..Default::default() };
+        let self = Self { addr, receiver, clients: Mutex::new(Vec::new()) };
+
+        // todo: do something with tx
 
         self
     }
