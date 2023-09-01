@@ -13,7 +13,7 @@ repository.workspace = true
 chrono = "0.4.26"
 regex.workspace = true
 serde.workspace = true
-surrealdb = { version = "1.0.0-beta9", features = ["protocol-http"] }
+surrealdb = { version = "1.0.0-beta.10", features = ["protocol-http"] }
 tokio = { workspace = true, features = ["macros", "net", "rt-multi-thread", "sync"] }
 toml = "0.7.6"
 
