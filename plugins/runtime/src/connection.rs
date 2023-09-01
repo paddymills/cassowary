@@ -13,7 +13,4 @@ pub enum ConnectionState {
 
     /// Plugin TCP stream has been closed
     Disconnected,
-
-    /// Plugin is unreachable
-    Offline
 }
