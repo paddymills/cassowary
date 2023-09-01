@@ -18,6 +18,7 @@ use uuid::Uuid;
 // Uuid spec if of 32 characters long, so this number must not exceed 32
 const UUID_LEN: usize = 16;
 
+/// UUID specific to High Steel's usage
 #[derive(Debug)]
 pub struct HsUuid {
     uuid: [u8; UUID_LEN]
