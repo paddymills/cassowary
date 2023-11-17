@@ -1,6 +1,4 @@
 
-#![feature(async_fn_in_trait)]
-
 // linting directives (see https://doc.rust-lang.org/rustc/lints/index.html)
 #![warn(missing_docs)]
 #![warn(missing_debug_implementations)]
