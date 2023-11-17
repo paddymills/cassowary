@@ -21,7 +21,7 @@ pub enum MessageType {
 }
 
 /// Messages sent during connection setup phase
-#[derive(Debug)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ConnectionMessage {
     /// Initial message, giving the plugin an name
     Hello { name: String },
