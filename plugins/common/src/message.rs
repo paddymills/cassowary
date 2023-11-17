@@ -24,5 +24,8 @@ pub enum MessageType {
 #[derive(Debug, Serialize, Deserialize)]
 pub enum ConnectionMessage {
     /// Initial message, giving the plugin an name
-    Hello { name: String },
+    Hello {
+        /// the plugin's name, used for identification and plugin re-connection
+        name: String
+    },
 }
